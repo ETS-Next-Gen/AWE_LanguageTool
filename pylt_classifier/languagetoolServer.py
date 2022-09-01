@@ -5,7 +5,7 @@ from importlib import resources
 def runServer(fileName=None):
 
     MAPPING_PATH = \
-        resources.path('pyLTClassifier',
+        resources.path('pylt_classifier',
                        'LanguageTool-5.5')
 
     os.chdir(MAPPING_PATH)

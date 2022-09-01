@@ -42,7 +42,7 @@ class languagetoolClient:
     def __init__(self):
 
         self.MAPPING_PATH = \
-            resources.path('awe_workbench.languagetool',
+            resources.path('pylt_classifier',
                            'languagetool_rulemapping.json')
         print(self.MAPPING_PATH)
 

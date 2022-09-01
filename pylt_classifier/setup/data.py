@@ -49,7 +49,7 @@ class data:
             #################################################################
 
             dir_name = \
-                resources.path('pyLTClassifier', '')
+                resources.path('pylt_classifier', '')
 
             extension = ".zip"
             os.makedirs(dir_name, exist_ok=True)
