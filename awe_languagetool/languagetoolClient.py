@@ -1,3 +1,6 @@
+#!/usr/bin/env python3.10
+# Copyright 2022, Educational Testing Service
+
 '''
 A thin, async wrapper to languagetool
 '''
@@ -42,7 +45,7 @@ class languagetoolClient:
     def __init__(self):
 
         self.MAPPING_PATH = \
-            resources.path('pylt_classifier',
+            resources.path('awe_languagetool',
                            'languagetool_rulemapping.json')
         print(self.MAPPING_PATH)
 

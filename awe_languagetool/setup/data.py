@@ -1,4 +1,5 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
+# Copyright 2022, Educational Testing Service
 
 import argparse
 
@@ -49,7 +50,7 @@ class data:
             #################################################################
 
             dir_name = \
-                resources.path('pylt_classifier', '')
+                resources.path('awe_languagetool', '')
 
             extension = ".zip"
             os.makedirs(dir_name, exist_ok=True)
