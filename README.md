@@ -1,4 +1,4 @@
-# aWE_LanguageTool
+# AWE_LanguageTool
 
 Python embedding of the LanguageTool error checker, with new classification of error types. To
 be required by AWE Workbench, NLP tool to support the Writing Observer project.
