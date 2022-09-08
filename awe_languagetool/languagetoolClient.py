@@ -1,8 +1,9 @@
 #!/usr/bin/env python3.10
-# Copyright 2022, Educational Testing Service
-
 '''
-A thin, async wrapper to languagetool
+A thin, async wrapper to languagetool.
+
+Copyright © 2022. Educational Testing Service. See license file in
+this repository for details.
 '''
 
 import asyncio
@@ -19,6 +20,16 @@ from collections import Counter
 
 
 def cleanstring(a_string):
+    '''
+    Make a clean string from LanguageTool codes. This has two steps:
+
+    * Remove all non-printable characters from a string. This allows
+      unicode like “你好，” “cześć,” and similar. It does not allow
+      control codes, newlines, tabs, etc., and extra whitespace.
+    * Convert To Title Case (Which Looks Like This Bullet)
+
+    "  hell\no, friend\n" ==> "Hello, Friend"
+    '''
     filtered_characters = list(s for s in a_string if s.isprintable())
     return ''.join(filtered_characters).title().strip()
 
