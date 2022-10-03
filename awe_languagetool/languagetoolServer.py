@@ -23,7 +23,6 @@ def runServer(fileName=None):
     with resources.path('awe_languagetool.LanguageTool5_5',
                         'languagetool-server.jar') as LANGUAGE_TOOL_PATH:
         MAPPING_PATH = os.path.dirname(LANGUAGE_TOOL_PATH)
-        print(LANGUAGE_TOOL_PATH, MAPPING_PATH)                       
 
     try:
         os.chdir(MAPPING_PATH)
