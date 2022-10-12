@@ -72,9 +72,9 @@ class languagetoolClient:
         for rule in self.ruleInfo:
             for subrule in self.ruleInfo[rule]:
                 [cat, subcat] = self.ruleInfo[rule][subrule]
-                if cleanstring(cat) not in self.categoryList:
-                    self.categoryList.append(cleanstring(cat))
-                subcat_name = cleanstring(cat) + ': ' + cleanstring(subcat)
+                if cleanstring(cat).title() not in self.categoryList:
+                    self.categoryList.append(cleanstring(cat).title())
+                subcat_name = cleanstring(cat).title() + ': ' + cleanstring(subcat).title()
                 if cleanstring(subcat_name) not in self.subcategoryList:
                     self.subcategoryList.append(cleanstring(subcat_name))
 
