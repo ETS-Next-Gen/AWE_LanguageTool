@@ -55,6 +55,7 @@ class languagetoolClient:
 
     def __init__(self):
 
+        
         self.MAPPING_PATH = \
             resources.path('awe_languagetool',
                            'languagetool_rulemapping.json')
