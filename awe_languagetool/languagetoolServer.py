@@ -20,7 +20,6 @@ def runServer(fileName=None):
     Runs the LanguageTool server, using `importlib.resources` to find the
     jar file.
     '''
-
     # In order for python 3.9 to work we have to make a slight hack to the
     # language tools module in order to ensure that this works.  To do that
     # we first import the tool and then set the origin explicitly.  
@@ -35,11 +34,11 @@ def runServer(fileName=None):
         LTSpec = awe_languagetool.LanguageTool5_5.__spec__
         LTSpec.origin = LTSpec.submodule_search_locations[0]
 
-        
     with resources.path('awe_languagetool.LanguageTool5_5',
                         'languagetool-server.jar') as LANGUAGE_TOOL_PATH:
         MAPPING_PATH = os.path.dirname(LANGUAGE_TOOL_PATH)
 
+        
     try:
         os.chdir(MAPPING_PATH)
     except FileNotFoundError:
