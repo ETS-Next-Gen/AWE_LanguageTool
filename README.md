@@ -42,7 +42,7 @@ text_to_process = '...'
 output = client.summarizeText(text_to_process)
 # Example of output
 # {
-#     'word_counts': {
+#     'wordcounts': {
 #         'tokens': 0,
 #         'types': 0,
 #         'counts': [('word', 0), ...]

@@ -10,12 +10,13 @@ this repository for details.
 '''
 
 import os
+import subprocess
 import awe_languagetool
 
 from importlib import resources
 
 
-def runServer(fileName=None):
+def runServer(fileName=None, port=8081):
     '''
     Runs the LanguageTool server, using `importlib.resources` to find the
     jar file.
@@ -45,12 +46,12 @@ def runServer(fileName=None):
         print("Path not found starting LanguageTool: ", MAPPING_PATH)
         raise
 
-    language_tool_command = "java -cp languagetool-server.jar \
+    language_tool_command = f"java -cp languagetool-server.jar \
               org.languagetool.server.HTTPServer \
-              --port 8081 --allow-origin \"*\""
+              --port {port} --allow-origin \"*\""
 
-    runner = os.system(language_tool_command)
-    if runner != 0:
+    runner = subprocess.Popen(language_tool_command, shell=True)
+    if not runner:
         print("Could not start language tool!")
         raise ChildProcessError("Unable to start Language Tool. Error code: {runner}".format(runner=runner))        
 

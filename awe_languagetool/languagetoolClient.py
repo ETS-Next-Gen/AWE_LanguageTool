@@ -53,9 +53,9 @@ class languagetoolClient:
                                + 1) if not chr(i).isprintable()
     }
 
-    def __init__(self):
+    def __init__(self, port=8081):
 
-        
+        self.port = port
         self.MAPPING_PATH = \
             resources.path('awe_languagetool',
                            'languagetool_rulemapping.json')
@@ -108,7 +108,7 @@ class languagetoolClient:
 
             returnVal = None
             async with aiohttp.ClientSession() as session:
-                async with session.post('http://localhost:8081/v2/check',
+                async with session.post(f'http://localhost:{self.port}/v2/check',
                                         data=query) as response:
                     returnVal = await response.json()
             await session.close()
@@ -117,14 +117,14 @@ class languagetoolClient:
             print(e)
             return None
 
-    def processText(self, event, text):
+    async def processText(self, event, text):
         """
         """
 
         matches = []
         try:
             result = \
-                asyncio.get_event_loop().run_until_complete(self.check('en-US', self.make_printable(text.replace('\n', '<p>')).replace('<p>', '\n')))
+                await self.check('en-US', self.make_printable(text.replace('\n', '<p>')).replace('<p>', '\n'))
             for match in result['matches']:
                 newmatch = match
                 try:
@@ -148,6 +148,7 @@ class languagetoolClient:
                                     label = self.ruleInfo[ruleId]['nil'][0]
                                     detail = self.ruleInfo[ruleId]['nil'][1]
                                 else:
+                                    # ruleSubID is not defined in this path of code.
                                     if ruleSubID is not None:
                                         print('no valid match for ruleId '
                                               + ruleId + ' ' + ruleSubID)
@@ -218,15 +219,15 @@ class languagetoolClient:
         returnVal['matches'] = matches
         return returnVal
 
-    def summarizeText(self, text):
+    async def summarizeText(self, text):
         record = {}
-        matches = self.processText(record, text)
+        matches = await self.processText(record, text)
         freqInfo = self.wordCounts(text)
         returnVal = {}
         matches = self.summarizeMatches(text, matches)
         return matches
 
-    def summarizeMultipleTexts(self, ids, documents):
+    async def summarizeMultipleTexts(self, ids, documents):
 
         wordcounts = {}
         category_counts = {}
@@ -235,7 +236,7 @@ class languagetoolClient:
         category_names = []
         subcategory_names = []
         for i, doc in enumerate(documents):
-            result = self.summarizeText(doc)
+            result = await self.summarizeText(doc)
             wordcounts[i] = result['wordcounts']
             category_counts[i] = result['category_counts']
             subcategory_counts[i] = result['subcategory_counts']
