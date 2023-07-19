@@ -33,6 +33,13 @@ from awe_languagetool import languagetoolServer
 languagetoolServer.runServer()
 ```
 
+This can also be ran using directly using the Java command.
+Note that this command has not been fully tested with which directory it needs to be run from.
+If running this does not work, see the `languagetoolServer.py` file for more information about how the system is started.
+```bash
+java -cp languagetool-server.jar org.languagetool.server.HTTPServer --port {port} --allow-origin "*"
+```
+
 1. Connect the client (requires another terminal)
 
 ```python
