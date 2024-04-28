@@ -61,12 +61,19 @@ class languagetoolClient:
                            'languagetool_rulemapping.json')
         print(self.MAPPING_PATH)
 
-        if not os.path.exists(self.MAPPING_PATH):
+        # The importlib.resources objects behave differently than standard paths
+        # so it is necessary to adjust the code to use the resource context functions
+        # rather than standard file functions.
+        #if not os.path.exists(self.MAPPING_PATH):
+        if not resources.is_resource('awe_languagetool',
+                                               'languagetool_rulemapping.json'):
             raise mappingPathError(
                 "Trying to load AWE Workbench Lexicon Module \
                  without supporting datafiles"
             )
-        fo = open(self.MAPPING_PATH, "r")
+        # Adjusting for context functions.
+        #fo = open(self.MAPPING_PATH, "r")
+        fo = resources.open_text('awe_languagetool', 'languagetool_rulemapping.json')
         jsonContent = fo.read()
         self.ruleInfo = json.loads(jsonContent)
         fo.close()

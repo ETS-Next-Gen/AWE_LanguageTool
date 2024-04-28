@@ -37,11 +37,14 @@ def runServer(fileName=None, port=8081):
 
     with resources.path('awe_languagetool.LanguageTool5_5',
                         'languagetool-server.jar') as LANGUAGE_TOOL_PATH:
+        print("Setting Language Path:",  LANGUAGE_TOOL_PATH)
         MAPPING_PATH = os.path.dirname(LANGUAGE_TOOL_PATH)
 
         
     try:
-        os.chdir(MAPPING_PATH)
+        os.chdir(MAPPING_PATH + "/LanguageTool5_5")
+        print("Changed Dir to {}".format(MAPPING_PATH))
+        # os.chdir(MAPPING_PATH)
     except FileNotFoundError:
         print("Path not found starting LanguageTool: ", MAPPING_PATH)
         raise
