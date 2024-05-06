@@ -35,16 +35,17 @@ def runServer(fileName=None, port=8081):
         LTSpec = awe_languagetool.LanguageTool5_5.__spec__
         LTSpec.origin = LTSpec.submodule_search_locations[0]
 
-    with resources.path('awe_languagetool.LanguageTool5_5',
-                        'languagetool-server.jar') as LANGUAGE_TOOL_PATH:
+    
+    with resources.as_file(
+            resources.files('awe_languagetool.LanguageTool5_5').joinpath('languagetool-server.jar')
+        ) as LANGUAGE_TOOL_PATH:
         print("Setting Language Path:",  LANGUAGE_TOOL_PATH)
         MAPPING_PATH = os.path.dirname(LANGUAGE_TOOL_PATH)
 
         
     try:
-        os.chdir(MAPPING_PATH + "/LanguageTool5_5")
+        os.chdir(MAPPING_PATH)
         print("Changed Dir to {}".format(MAPPING_PATH))
-        # os.chdir(MAPPING_PATH)
     except FileNotFoundError:
         print("Path not found starting LanguageTool: ", MAPPING_PATH)
         raise
