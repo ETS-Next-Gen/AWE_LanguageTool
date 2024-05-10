@@ -29,15 +29,16 @@ def runServer(fileName=None, port=8081):
     # value which *does* seem to be set by default to supply the location
     # for origin.  Having done that we can then go about the rest of it
     # without error.
-    import platform
-    if (platform.python_version()[0:3] == "3.9"):
-        import awe_languagetool.LanguageTool5_5
-        LTSpec = awe_languagetool.LanguageTool5_5.__spec__
-        LTSpec.origin = LTSpec.submodule_search_locations[0]
+    # import platform
+    # if (platform.python_version()[0:3] == "3.9"):
+    #     import awe_languagetool.LanguageTool5_5
+    #     LTSpec = awe_languagetool.LanguageTool5_5.__spec__
+    #     LTSpec.origin = LTSpec.submodule_search_locations[0]
 
-    
+    # NOTE: after playing with python3.9, it does not like the 'package.sub' string.
+    # So, I added multiple 'joinpaths'; this worked for both 3.9 and 3.11
     with resources.as_file(
-            resources.files('awe_languagetool.LanguageTool5_5').joinpath('languagetool-server.jar')
+            resources.files('awe_languagetool').joinpath('LanguageTool5_5').joinpath('languagetool-server.jar')
         ) as LANGUAGE_TOOL_PATH:
         print("Setting Language Path:",  LANGUAGE_TOOL_PATH)
         MAPPING_PATH = os.path.dirname(LANGUAGE_TOOL_PATH)
