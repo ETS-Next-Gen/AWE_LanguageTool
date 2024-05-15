@@ -16,7 +16,7 @@ import awe_languagetool
 from importlib import resources
 
 
-def runServer(fileName=None, port=8081):
+def runServer(fileName=None, port=8081, config_file="languagetool.cfg"):
     '''
     Runs the LanguageTool server, using `importlib.resources` to find the
     jar file.
@@ -52,8 +52,8 @@ def runServer(fileName=None, port=8081):
         raise
 
     language_tool_command = f"java -cp languagetool-server.jar \
-              org.languagetool.server.HTTPServer \
-              --port {port} --allow-origin \"*\""
+        org.languagetool.server.HTTPServer \
+        --config {config_file} --port {port} --allow-origin \"*\""
 
     runner = subprocess.Popen(language_tool_command, shell=True)
     if not runner:
