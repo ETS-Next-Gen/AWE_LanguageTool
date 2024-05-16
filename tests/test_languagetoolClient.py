@@ -93,9 +93,9 @@ class LanguageToolClientTest(unittest.TestCase):
                 sample_text = text_file.read()
 
                 # Start timing benchmark
-                start = time.process_time()
+                start = time.time()
                 output = asyncio.run(client.summarizeText(sample_text))
-                end = time.process_time()
+                end = time.time()
 
                 # Show results
                 print()
@@ -125,14 +125,14 @@ class LanguageToolClientTest(unittest.TestCase):
                     index = index + 1
 
             # Make multiple requests
-            start = time.process_time()
+            start = time.time()
             output = asyncio.run(
                 client.summarizeMultipleTexts(
                     list(all_texts.keys()), 
                     list(all_texts.values())
                 )
             )
-            end = time.process_time()
+            end = time.time()
 
             # Show results
             print()

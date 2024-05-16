@@ -51,9 +51,14 @@ def runServer(fileName=None, port=8081, config_file="languagetool.cfg"):
         print("Path not found starting LanguageTool: ", MAPPING_PATH)
         raise
 
-    language_tool_command = f"java -cp languagetool-server.jar \
-        org.languagetool.server.HTTPServer \
-        --config {config_file} --port {port} --allow-origin \"*\""
+    if config_file == "":
+        language_tool_command = f"java -cp languagetool-server.jar \
+            org.languagetool.server.HTTPServer \
+            --port {port} --allow-origin \"*\""
+    else:
+        language_tool_command = f"java -cp languagetool-server.jar \
+            org.languagetool.server.HTTPServer \
+            --config {config_file} --port {port} --allow-origin \"*\""
 
     runner = subprocess.Popen(language_tool_command, shell=True)
     if not runner:
