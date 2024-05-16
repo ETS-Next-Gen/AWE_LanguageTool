@@ -44,9 +44,11 @@ java -cp languagetool-server.jar org.languagetool.server.HTTPServer --port {port
 
 ```python
 from awe_languagetool import languagetoolClient
+import asyncio
+
 client = languagetoolClient.languagetoolClient()
 text_to_process = '...'
-output = client.summarizeText(text_to_process)
+output = asyncio.run(client.summarizeText(text_to_process))
 # Example of output
 # {
 #     'wordcounts': {

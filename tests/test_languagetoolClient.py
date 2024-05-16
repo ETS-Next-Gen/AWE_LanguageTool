@@ -10,6 +10,7 @@
 # --- [ IMPORTS ] ------------------------------------------------------------------
 
 import unittest
+import asyncio
 import time
 
 from awe_languagetool import languagetoolClient
@@ -61,7 +62,7 @@ class LanguageToolClientTest(unittest.TestCase):
 
                 # Start timing benchmark
                 start = time.process_time()
-                output = new_client.summarizeText(sample_text)
+                output = asyncio.run(new_client.summarizeText(sample_text))
                 end = time.process_time()
 
                 # Show results
