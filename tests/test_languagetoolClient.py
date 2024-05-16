@@ -51,7 +51,7 @@ class LanguageToolClientTest(unittest.TestCase):
         Attempt to start up a client, and pass in a sample text.
         We are measuring runtime of how well the server responds to a single request.
 
-        Precondition: ltServer is running.
+        Precondition: languagetoolServer is running.
         """
         try:
             new_client = languagetoolClient.languagetoolClient()
@@ -66,6 +66,7 @@ class LanguageToolClientTest(unittest.TestCase):
                 end = time.process_time()
 
                 # Show results
+                print()
                 print("---------[ TIMING BENCHMARK ]---------")
                 print(f"Time Elapsed: {end - start}")
                 print("--------------------------------------")
