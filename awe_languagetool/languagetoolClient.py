@@ -56,31 +56,36 @@ class languagetoolClient:
     def __init__(self, port=8081):
 
         self.port = port
-        self.MAPPING_PATH = \
-            resources.path('awe_languagetool',
-                           'languagetool_rulemapping.json')
-        print(self.MAPPING_PATH)
+        path_context = resources.as_file(
+            resources.files('awe_languagetool').joinpath('languagetool_rulemapping.json')
+        )
+        with path_context as out_path:
+            self.MAPPING_PATH = str(out_path)
+        print(str(self.MAPPING_PATH))
 
+        # The importlib.resources objects behave differently than standard paths
+        # so it is necessary to adjust the code to use the resource context functions
+        # rather than standard file functions.
         if not os.path.exists(self.MAPPING_PATH):
             raise mappingPathError(
                 "Trying to load AWE Workbench Lexicon Module \
                  without supporting datafiles"
             )
-        fo = open(self.MAPPING_PATH, "r")
-        jsonContent = fo.read()
-        self.ruleInfo = json.loads(jsonContent)
-        fo.close()
-        for rule in self.ruleInfo:
-            for subrule in self.ruleInfo[rule]:
-                [cat, subcat] = self.ruleInfo[rule][subrule]
-                if cleanstring(cat).title() not in self.categoryList:
-                    self.categoryList.append(cleanstring(cat).title())
-                subcat_name = cleanstring(cat).title() + ': ' + cleanstring(subcat).title()
-                if cleanstring(subcat_name) not in self.subcategoryList:
-                    self.subcategoryList.append(cleanstring(subcat_name))
+        # Adjusting for context functions.
+        with open(self.MAPPING_PATH, "r") as fo:
+            jsonContent = fo.read()
+            self.ruleInfo = json.loads(jsonContent)
+            for rule in self.ruleInfo:
+                for subrule in self.ruleInfo[rule]:
+                    [cat, subcat] = self.ruleInfo[rule][subrule]
+                    if cleanstring(cat).title() not in self.categoryList:
+                        self.categoryList.append(cleanstring(cat).title())
+                    subcat_name = cleanstring(cat).title() + ': ' + cleanstring(subcat).title()
+                    if cleanstring(subcat_name) not in self.subcategoryList:
+                        self.subcategoryList.append(cleanstring(subcat_name))
 
-        self.categoryList.sort()
-        self.subcategoryList.sort()
+            self.categoryList.sort()
+            self.subcategoryList.sort()
 
     def make_printable(self, s):
         """Replace non-printable characters in a string."""

@@ -26,6 +26,12 @@ The server runs the relevant Java command to start the `languagetool-server.jar`
 This files comes from directly from the original Language Tool.
 The client handles wrapping the output and adding in additional error classification categories.
 
+### LanguageTool Configuration & Running
+
+With the python LT wrapper, this can be run from anywhere in the project. However, if you decide to run the java command directly (see below), this needs to be run within the `awe_languagetool/LanguageTool5_5/` directory.
+
+By default, LT runs pretty slow with too many incoming requests; you can modify the server settings for LT in `awe_languagetool/LanguageTool5_5/languagetool.cfg`. See [this forum post](https://forum.languagetool.org/t/too-many-parallel-requests/8290/3) on a decent server config file.
+
 1. Start the server
 
 ```python
@@ -37,16 +43,18 @@ This can also be ran using directly using the Java command.
 Note that this command has not been fully tested with which directory it needs to be run from.
 If running this does not work, see the `languagetoolServer.py` file for more information about how the system is started.
 ```bash
-java -cp languagetool-server.jar org.languagetool.server.HTTPServer --port {port} --allow-origin "*"
+java -cp languagetool-server.jar org.languagetool.server.HTTPServer --config languagetool.cfg --port {port} --allow-origin "*"
 ```
 
 1. Connect the client (requires another terminal)
 
 ```python
 from awe_languagetool import languagetoolClient
+import asyncio
+
 client = languagetoolClient.languagetoolClient()
 text_to_process = '...'
-output = client.summarizeText(text_to_process)
+output = asyncio.run(client.summarizeText(text_to_process))
 # Example of output
 # {
 #     'wordcounts': {
