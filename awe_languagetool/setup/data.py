@@ -50,8 +50,6 @@ def extra_build_commands(develop=False, install=False):
         # Since python 3.11, we cannot use 'path', but this:
         with resources.as_file(resources.files('awe_languagetool')) as path:
             dir_name = str(path)
-        #dir_name = \
-        #    resources.path('awe_languagetool', '')
 
         extension = ".zip"
         os.makedirs(dir_name, exist_ok=True)

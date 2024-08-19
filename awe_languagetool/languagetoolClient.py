@@ -56,6 +56,9 @@ class languagetoolClient:
     def __init__(self, port=8081):
 
         self.port = port
+
+        # As of python 3.11, resources.path() is deprecated, and the following
+        # code is the 'equivalent' replacement.
         path_context = resources.as_file(
             resources.files('awe_languagetool').joinpath('languagetool_rulemapping.json')
         )
@@ -71,7 +74,7 @@ class languagetoolClient:
                 "Trying to load AWE Workbench Lexicon Module \
                  without supporting datafiles"
             )
-        # Adjusting for context functions.
+        
         with open(self.MAPPING_PATH, "r") as fo:
             jsonContent = fo.read()
             self.ruleInfo = json.loads(jsonContent)
