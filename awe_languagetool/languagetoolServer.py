@@ -21,20 +21,6 @@ def runServer(fileName=None, port=8081, config_file="languagetool.cfg"):
     Runs the LanguageTool server, using `importlib.resources` to find the
     jar file.
     '''
-    # In order for python 3.9 to work we have to make a slight hack to the
-    # language tools module in order to ensure that this works.  To do that
-    # we first import the tool and then set the origin explicitly.  
-    #
-    # This cheap hack does just that by using the submodule_search_location
-    # value which *does* seem to be set by default to supply the location
-    # for origin.  Having done that we can then go about the rest of it
-    # without error.
-    # import platform
-    # if (platform.python_version()[0:3] == "3.9"):
-    #     import awe_languagetool.LanguageTool5_5
-    #     LTSpec = awe_languagetool.LanguageTool5_5.__spec__
-    #     LTSpec.origin = LTSpec.submodule_search_locations[0]
-
     # NOTE: after playing with python3.9, it does not like the 'package.sub' string.
     # So, I added multiple 'joinpaths'; this worked for both 3.9 and 3.11
     with resources.as_file(
@@ -43,7 +29,6 @@ def runServer(fileName=None, port=8081, config_file="languagetool.cfg"):
         print("Setting Language Path:",  LANGUAGE_TOOL_PATH)
         MAPPING_PATH = os.path.dirname(LANGUAGE_TOOL_PATH)
 
-        
     try:
         os.chdir(MAPPING_PATH)
         print("Changed Dir to {}".format(MAPPING_PATH))
@@ -51,7 +36,7 @@ def runServer(fileName=None, port=8081, config_file="languagetool.cfg"):
         print("Path not found starting LanguageTool: ", MAPPING_PATH)
         raise
 
-    if config_file == "":
+    if not config_file:
         language_tool_command = f"java -cp languagetool-server.jar \
             org.languagetool.server.HTTPServer \
             --port {port} --allow-origin \"*\""
