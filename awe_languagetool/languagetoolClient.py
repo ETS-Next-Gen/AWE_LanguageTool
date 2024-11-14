@@ -188,7 +188,7 @@ class languagetoolClient:
                                     label = self.ruleInfo[ruleId]['nil'][0]
                                     detail = self.ruleInfo[ruleId]['nil'][1]
                                 else:
-                                    # ruleSubID is not defined in this path of code.
+                                    # TODO ruleSubID is not defined in this path of code.
                                     if ruleSubID is not None:
                                         print('no valid match for ruleId '
                                               + ruleId + ' ' + ruleSubID)
