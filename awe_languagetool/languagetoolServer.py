@@ -30,10 +30,10 @@ def runServer(port=8081, config_file=None):
         print("Setting Language Path:",  LANGUAGE_TOOL_PATH)
 
     if config_file and not os.path.isfile(config_file):
-        print(f"Error: Configuration file '{config_file}' not found.")
         sample_config_path = os.path.join(os.path.dirname(__file__), 'languagetool.tmp.cfg')
-        print(f"Please copy the sample configuration file using `cp {sample_config_path} {config_file}`")
-        raise FileNotFoundError(f"Configuration file '{config_file}' does not exist.")
+        error_message = f"Error: Configuration file '{config_file}' not found.\n"\
+            f"Please copy the sample configuration file using `cp {sample_config_path} {config_file}`"
+        raise FileNotFoundError(error_message)
 
     if not config_file:
         print('No configuration file set, continuing without one.')
@@ -48,7 +48,6 @@ def runServer(port=8081, config_file=None):
 
     runner = subprocess.Popen(language_tool_command, shell=True)
     if not runner:
-        print("Could not start language tool!")
         raise ChildProcessError("Unable to start Language Tool. Error code: {runner}".format(runner=runner))        
 
 
