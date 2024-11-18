@@ -80,12 +80,12 @@ class languagetoolClient:
             '`python -m awe_languagetool.languagetoolServer`\n'\
             'OR with a configuration file\n'\
             '`python -m awe_languagetool.languagetoolServer --config /path/to/config.cfg`\n'\
-            'Ensure you are using the correct url.'\
+            'Ensure you are using the correct url.'
 
         try:
             resp = requests.get(f'{self.server_url}/v2/check', params={'text': 'test', 'language': 'en-US'})
             if resp.status_code != 200:
-                raise RuntimeError(server_not_available_error)
+                raise RuntimeError(f'{server_not_available_error}\nResponse from server: {resp.status_code}.')
         except requests.ConnectionError:
             raise RuntimeError(server_not_available_error)
 
