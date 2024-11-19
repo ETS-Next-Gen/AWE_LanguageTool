@@ -6,15 +6,13 @@ Copyright © 2022. Educational Testing Service. See license file in
 this repository for details.
 '''
 
-import asyncio
-import inspect
 import aiohttp
 import math
 import sys
 import json
 import os
-import argparse
 import pandas as pd
+import requests
 from importlib import resources
 from collections import Counter
 
@@ -38,6 +36,24 @@ class mappingPathError(Exception):
     pass
 
 
+def test_server_connection(server):
+    '''Try to query `server` and raise a Runtime error if we can't reach it
+    '''
+    server_not_available_error = f'LanguageTool Server was not found running on {server}.\n'\
+        'Please make sure to run the LanguageTool Server before using LanguageTool Client. Run:\n'\
+        '`python -m awe_languagetool.languagetoolServer`\n'\
+        'OR with a configuration file\n'\
+        '`python -m awe_languagetool.languagetoolServer --config /path/to/config.cfg`\n'\
+        'Ensure you are using the correct url.'
+
+    try:
+        resp = requests.get(f'{server}/v2/check', params={'text': 'test', 'language': 'en-US'})
+        if resp.status_code != 200:
+            raise RuntimeError(f'{server_not_available_error}\nResponse from server: {resp.status_code}.')
+    except requests.ConnectionError:
+        raise RuntimeError(server_not_available_error)
+
+
 class languagetoolClient:
 
     ruleInfo = None
@@ -53,9 +69,30 @@ class languagetoolClient:
                                + 1) if not chr(i).isprintable()
     }
 
-    def __init__(self, port=8081):
+    def __init__(self, port=8081, host='localhost', server_url=None):
+        """
+        Handles initializing files and connections for the LanguageTool client
+        to use.
 
-        self.port = port
+        Parameters:
+        -----------
+        port : int, optional
+            The port on which the server is running. Defaults to 8081 if not provided.
+
+        host : str, optional
+            The hostname or IP address of the server. Defaults to 'localhost' if not provided.
+
+        server_url : str, optional
+            The full URL of the server. If provided, this URL is used as `self.server_url`.
+            If not provided, `self.server_url` is constructed using the specified `host` and `port`.
+
+        Notes:
+        ------
+        If `server_url` is specified, it overrides any values set by `host` and `port`.
+        """
+        self.server_url = server_url or f'http://{host}:{port}'
+
+        test_server_connection(self.server_url)
 
         # As of python 3.11, resources.path() is deprecated, and the following
         # code is the 'equivalent' replacement.
@@ -116,7 +153,7 @@ class languagetoolClient:
 
             returnVal = None
             async with aiohttp.ClientSession() as session:
-                async with session.post(f'http://localhost:{self.port}/v2/check',
+                async with session.post(f'{self.server_url}/v2/check',
                                         data=query) as response:
                     returnVal = await response.json()
             await session.close()
@@ -156,7 +193,7 @@ class languagetoolClient:
                                     label = self.ruleInfo[ruleId]['nil'][0]
                                     detail = self.ruleInfo[ruleId]['nil'][1]
                                 else:
-                                    # ruleSubID is not defined in this path of code.
+                                    # TODO ruleSubID is not defined in this path of code.
                                     if ruleSubID is not None:
                                         print('no valid match for ruleId '
                                               + ruleId + ' ' + ruleSubID)
