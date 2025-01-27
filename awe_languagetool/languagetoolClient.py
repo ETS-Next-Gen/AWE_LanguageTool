@@ -43,7 +43,8 @@ def test_server_connection(server):
         'Please make sure to run the LanguageTool Server before using LanguageTool Client. Run:\n'\
         '`python -m awe_languagetool.languagetoolServer`\n'\
         'OR with a configuration file\n'\
-        '`python -m awe_languagetool.languagetoolServer --config /path/to/config.cfg`\n'\
+        '`python -m awe_languagetool.setup.copy_config`\n'\
+        '`python -m awe_languagetool.languagetoolServer --config languagetool.cfg`\n'\
         'Ensure you are using the correct url.'
 
     try:

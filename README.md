@@ -24,7 +24,11 @@ The system uses a client-server model where the LanguageTool server processes re
 
 1. Configure LanguageTool Server (optional)
 
-    Before starting the LanguageTool server, ensure that a server configuration file exists in `awe_languagetool/LanguageTool5_5/`. We provide a sample configuration file called `languagetool.tmp.cfg`. To use it, copy and rename this file to `languagetool.cfg`.
+    Before starting the LanguageTool server, ensure that a server configuration file exists in `awe_languagetool/LanguageTool5_5/`. We provide a sample configuration file called `languagetool.tmp.cfg`. To use it, copy and rename this file to `languagetool.cfg`. Create a copy with the following:
+
+    ```bash
+    python -m awe_languagetool.setup.copy_config
+    ```
 
     To improve performance, particularly under high request loads, adjust the server settings in `awe_languagetool/LanguageTool5_5/languagetool.cfg`. For suggested settings, see [this forum post](https://forum.languagetool.org/t/too-many-parallel-requests/8290/3) on server configurations. For a full list of configuration options, refer to the [LanguageTool server code](https://github.com/languagetool-org/languagetool/blob/c6321ab5837a9e1ae5501d746f947f5706b4b274/languagetool-server/src/main/java/org/languagetool/server/HTTPServerConfig.java).
 
